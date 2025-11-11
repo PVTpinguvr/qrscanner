@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Scanner Preview</title>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #f5f5f5;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    #reader {
+      width: 320px;
+      max-width: 90vw;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: green;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>QR Code Scanner</h2>
+  <div id="reader"></div>
+  <div id="result">Scan a QR code...</div>
+
+  <script>
+    function onScanSuccess(decodedText, decodedResult) {
+      // If it's a URL, redirect automatically
+      if (decodedText.startsWith("http://") || decodedText.startsWith("https://")) {
+        window.location.href = decodedText;
+      } else {
+        document.getElementById("result").innerText = `Result: ${decodedText}`;
+      }
+      console.log(decodedResult);
+    }
+
+    function onScanError(errorMessage) {
+      // Ignore scan errors
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader",
+      { fps: 10, qrbox: 250 }
+    );
+    html5QrcodeScanner.render(onScanSuccess, onScanError);
+  </script>
+</body>
+</html>
